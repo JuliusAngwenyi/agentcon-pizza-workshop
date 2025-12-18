@@ -113,9 +113,9 @@ Ahora, creemos el agente en sí. En este caso, usará el modelo **GPT-4o**.
 ```python
 agent = project_client.agents.create_agent(
     model="gpt-4o",
-    name="my-agent"
+    name="mi-agente"
 )
-print(f"Created agent, ID: {agent.id}")
+print(f"Agente Creado, ID: {agent.id}")
 ```
 
 
@@ -126,7 +126,7 @@ Los agentes interactúan dentro de hilos. Un hilo es como un contenedor de conve
 
 ```python
 thread = project_client.agents.threads.create()
-print(f"Created thread, ID: {thread.id}")
+print(f"Hilo creado, ID: {thread.id}")
 ```
 
 
@@ -140,10 +140,10 @@ try:
     while True:
 
         # Obtener la entrada del usuario
-        user_input = input("You: ")
+        user_input = input("Tú: ")
 
         # Salir del bucle
-        if user_input.lower() in ["exit", "quit"]:
+        if user_input.lower() in ["salir", "terminar"]:
             break
 
         # Agregar un mensaje al hilo
@@ -190,7 +190,7 @@ Una vez que hayas terminado, limpia eliminando el agente:
 finally:
     # Limpiar el agente cuando termines
     project_client.agents.delete_agent(agent.id)
-    print("Deleted agent")
+    print("Agente eliminado")
 ```
 
 Agrega este código para eliminar el agente fuera del bucle while True. De lo contrario, el agente se eliminará inmediatamente después de tu primera interacción.

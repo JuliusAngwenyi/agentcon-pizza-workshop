@@ -14,7 +14,7 @@ Para cerrar esta brecha, usaremos **Generación Aumentada por Recuperación (RAG
 - Esto asegura que las respuestas de tu agente sean **precisas, actualizadas y fundamentadas** en información real.  
 - En Microsoft Foundry, usaremos la función **Búsqueda de Archivos** para implementar esto.  
 
-En este capítulo, usarás una carpeta llamada **`./documents`** que contiene información sobre **tiendas de Contoso Pizza** - como ubicaciones, horarios de apertura y menús.  
+En este capítulo, usarás una carpeta llamada **`./documentos`** que contiene información sobre **tiendas de Contoso Pizza** - como ubicaciones, horarios de apertura y menús.  
 
 Subiremos estos archivos a **Microsoft Foundry**, crearemos un **almacén vectorial** y conectaremos ese almacén al agente usando una **herramienta de Búsqueda de Archivos**.  
 
@@ -67,20 +67,20 @@ Esto conecta tu script a tu proyecto de Microsoft Foundry, permitiendo que las s
 
 ### Parte C - Subir Tus Documentos  
 
-**Objetivo:** Subir archivos desde `./documents` y recopilar sus IDs.  
+**Objetivo:** Subir archivos desde `../documentos` y recopilar sus IDs.  
 
 Agrega esto:  
 
 ```python
-DOCS_DIR = "./documents"
+DOCS_DIR = "../documentos"
 
 if not os.path.isdir(DOCS_DIR):
     raise FileNotFoundError(
-        f"Documents folder not found at {DOCS_DIR}. "
-        "Create it and add your Contoso Pizza files (PDF, TXT, MD, etc.)."
+        f"Carpeta de documentos no encontrada en {DOCS_DIR}. "
+        "Créala y agrega tus archivos de Contoso Pizza (PDF, TXT, MD, etc.)."
     )
 
-print(f"Uploading files from {DOCS_DIR} ...")
+print(f"Subiendo archivos desde {DOCS_DIR} ...")
 file_ids = []
 for fname in os.listdir(DOCS_DIR):
     fpath = os.path.join(DOCS_DIR, fname)
@@ -93,9 +93,9 @@ for fname in os.listdir(DOCS_DIR):
     )
     file_ids.append(uploaded.id)
 
-print(f"Uploaded {len(file_ids)} files.")
+print(f"Se subieron {len(file_ids)} archivos.")
 if not file_ids:
-    raise RuntimeError("No files uploaded. Put files in ./documents and re-run.")
+    raise RuntimeError("No se subieron archivos. Coloca archivos en ../documentos y vuelve a ejecutar.")
 ```
 
 **Por qué:**  
@@ -113,9 +113,9 @@ Agrega:
 ```python
 vector_store = project_client.agents.vector_stores.create_and_poll(
     data_sources=[],
-    name="contoso-pizza-store-information"
+    name="informacion-tiendas-contoso-pizza"
 )
-print(f"Created vector store, ID: {vector_store.id}")
+print(f"Vector store creado, ID: {vector_store.id}")
 ```
 
 **Por qué:**  
@@ -133,7 +133,7 @@ batch = project_client.agents.vector_store_file_batches.create_and_poll(
     vector_store_id=vector_store.id,
     file_ids=file_ids
 )
-print(f"Created vector store file batch, ID: {batch.id}")
+print(f"Lote de archivos del vector store creado, ID: {batch.id}")
 ```
 
 **Por qué:**  
@@ -142,7 +142,7 @@ Esto crea incrustaciones vectoriales para tus archivos para que el agente pueda 
 
 ### Archivo final
 ```python
-<!--@include: ../codesamples/add_data.py-->
+<!--@include: ../codesamples/es/add_data.py-->
 ```
 
 ### Ejecutar el Script  
@@ -156,13 +156,13 @@ python add_data.py
 Salida de ejemplo:  
 
 ```
-Uploading files from ./documents ...
-Uploaded 19 files.
-Created vector store, ID: vs_ii6H96sVMeQcXICvj7e3DsrK
-Created vector store file batch, ID: vsfb_47c68422adc24e0a915d0d14ca71a3cf
+Subiendo archivos desde ../documentos ...
+Se subieron 19 archivos.
+Vector store creado, ID: vs_ii6H96sVMeQcXICvj7e3DsrK
+Lote de archivos del vector store creado, ID: vsfb_47c68422adc24e0a915d0d14ca71a3cf
 ```
 
-✅ **Copia el ID del almacén vectorial** - lo usarás en la siguiente sección.  
+✅ **Copia el ID del almacén vectorial (vector store)** - lo usarás en la siguiente sección.  
 
 
 
@@ -174,7 +174,7 @@ En `agent.py`, justo después de crear tu `AIProjectClient`, agrega:
 
 ```python
 # Create the File Search tool
-vector_store_id = "<INSERT YOUR VECTOR STORE ID HERE>"
+vector_store_id = "<INSERTA EL ID DEL VECTOR STORE COPIADO>"
 file_search = FileSearchTool(vector_store_ids=[vector_store_id])
 ```
 
@@ -195,15 +195,14 @@ Encuentra el bloque donde creas tu agente y modifícalo para incluir el conjunto
 ```python
 agent = project_client.agents.create_agent(
     model="gpt-4o",
-    name="my-agent",
-    instructions=open("instructions.txt").read(),
+    name="pizza-bot",
+    instructions=open("instrucciones.txt").read(),
     top_p=0.7,
     temperature=0.7,
     toolset=toolset  # Add the toolset to the agent
 )
-print(f"Created agent, ID: {agent.id}")
+print(f"Agente creado, ID: {agent.id}")
 ```
-
 
 
 ## Paso 3 - Ejecutar el Agente  
@@ -218,7 +217,7 @@ Haz preguntas como:
 > "¿Qué tiendas de Contoso Pizza están abiertas después de las 8pm?"  
 > "¿Dónde está la tienda de Contoso Pizza más cercana?"  
 
-Escribe `exit` o `quit` para detener la conversación.  
+Escribe `salir` o `terminar` para detener la conversación.  
 
 
 
@@ -235,7 +234,7 @@ En este capítulo, tú:
 ## Muestra de código final
 
 ```python 
-<!--@include: ../codesamples/agent_4_rag.py-->
+<!--@include: ../codesamples/es/agent_4_rag.py-->
 ```
 
 *Traducido usando GitHub Copilot.*

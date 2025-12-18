@@ -23,7 +23,7 @@ Agregaremos una herramienta que, dado un **tamaño de grupo** y un **nivel de ap
 ### 1) Crear `tools.py` (nuevo archivo)
 
 ```python
-<!--@include: ../codesamples/tools.py-->
+<!--@include: ../codesamples/es/tools.py-->
 ```
 
 ::: info
@@ -66,7 +66,7 @@ Inserta este bloque **inmediatamente después** de tu configuración de Búsqued
 **Existente**
 ```python
 # Create the file_search tool
-vector_store_id = "<INSERT COPIED VECTOR STORE ID>"
+vector_store_id = "<INSERTA EL ID DEL VECTOR STORE COPIADO>"
 file_search = FileSearchTool(vector_store_ids=[vector_store_id])
 
 # Creating the toolset
@@ -77,7 +77,7 @@ toolset.add(file_search)
 **Nuevo**
 ```python
 # Create the file_search tool
-vector_store_id = "<INSERT COPIED VECTOR STORE ID>"
+vector_store_id = "<INSERTA EL ID DEL VECTOR STORE COPIADO>"
 file_search = FileSearchTool(vector_store_ids=[vector_store_id])
 
 # Create the function tool
@@ -136,7 +136,7 @@ En este capítulo tú:
 ## Muestra de código final
 
 ```python 
-<!--@include: ../codesamples/agent_5_tools.py-->
+<!--@include: ../codesamples/es/agent_5_tools.py-->
 ```
 
 *Traducido usando GitHub Copilot.*

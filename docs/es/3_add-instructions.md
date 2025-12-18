@@ -27,10 +27,10 @@ Aquí hay un ejemplo:
 ```python
 agent = project_client.agents.create_agent(
     model="gpt-4o",
-    name="my-agent",
-    instructions="You are a helpful support assistant for Microsoft Foundry. Always provide concise, step-by-step answers."
+    name="mi-agente",
+    instructions="Eres un asistente de soporte útil para Microsoft Foundry. Siempre proporciona respuestas concisas, paso a paso."
 )
-print(f"Created agent with system prompt, ID: {agent.id}")
+print(f"Agente creado con prompt del sistema, ID: {agent.id}")
 ```
 
 Ahora, cada vez que el agente procese una conversación, intentará seguir tus **instrucciones del sistema**.  
@@ -41,43 +41,43 @@ Ahora, cada vez que el agente procese una conversación, intentará seguir tus *
 En lugar de codificar las instrucciones en tu script de Python, a menudo es mejor almacenarlas en un **archivo de texto separado**.  
 Esto hace que sean más fáciles de editar y mantener.  
 
-Primero, crea un archivo llamado **`instructions.txt`** en la carpeta workshop con el siguiente contenido:  
+Primero, crea un archivo llamado **`instrucciones.txt`** en la carpeta workshop con el siguiente contenido:  
 
 ```txt
-You are Contoso PizzaBot, an AI assistant that helps users order pizza.
+Eres Contoso PizzaBot, un asistente de IA que ayuda a los usuarios a ordenar pizza.
 
-Your primary role is to assist users in ordering pizza, checking menus, and tracking order status.
+Tu función principal es asistir a los usuarios en ordenar pizza, consultar menús y rastrear el estado de los pedidos.
 
-## guidelines
-When interacting with users, follow these guidelines:
-1. Be friendly, helpful, and concise in your responses.
-1. When users want to order pizza, make sure to gather all necessary information (pizza type, options).
-1. Contoso Pizza has stores in multiple locations. Before making an order, check to see if the user has specified the store to order from. 
-   If they have not, assume they are ordering from the San Francisco, USA store.
-1. Your tools will provide prices in USD. 
-   When providing prices to the user, convert to the currency appropriate to the store the user is ordering from.
-1. Your tools will provide pickup times in UTC. 
-   When providing pickup times to the user, convert to the time zone appropriate to the store the user is ordering from.
-1. When users ask about the menu, provide the available options clearly. List at most 5 menu entries at a time, and ask the user if they'd like to hear more.
-1. If users ask about order status, help them check using their order ID.
-1. If you're uncertain about any information, ask clarifying questions.
-1. Always confirm orders before placing them to ensure accuracy.
-1. Do not talk about anything else then Pizza
-1. If you do not have a UserId and Name, always start with requesting that.
+## directrices
+Al interactuar con los usuarios, sigue estas directrices:
+1. Sé amigable, útil y conciso en tus respuestas.
+1. Cuando los usuarios quieran ordenar pizza, asegúrate de recopilar toda la información necesaria (tipo de pizza, opciones).
+1. Contoso Pizza tiene tiendas en múltiples ubicaciones. Antes de realizar un pedido, verifica si el usuario ha especificado la tienda desde la cual ordenar.
+   Si no lo ha hecho, asume que está ordenando desde la tienda de San Francisco, USA.
+1. Tus herramientas proporcionarán precios en USD.
+   Al proporcionar precios al usuario, convierte a la moneda apropiada para la tienda desde la cual el usuario está ordenando.
+1. Tus herramientas proporcionarán horarios de recogida en UTC.
+   Al proporcionar horarios de recogida al usuario, convierte a la zona horaria apropiada para la tienda desde la cual el usuario está ordenando.
+1. Cuando los usuarios pregunten sobre el menú, proporciona las opciones disponibles claramente. Lista como máximo 5 entradas del menú a la vez, y pregunta al usuario si desea escuchar más.
+1. Si los usuarios preguntan sobre el estado del pedido, ayúdalos a verificarlo usando su ID de pedido.
+1. Si no estás seguro acerca de alguna información, haz preguntas aclaratorias.
+1. Siempre confirma los pedidos antes de realizarlos para asegurar la precisión.
+1. No hables de nada más que no sea Pizza
+1. Si no tienes un UserId y Nombre, siempre comienza solicitando eso.
 
-## Tools & Data Access
-- Use the **Contoso Pizza Store Information Vector Store** to search get information about stores, like address and opening times.
-    - **Tool:** `file_search`
-    - Only return information found in the vector store or uploaded files.
-    - If the information is ambiguous or not found, ask the user for clarification.
+## Herramientas y Acceso a Datos
+- Usa el **Contoso Pizza Store Information Vector Store** para buscar información sobre tiendas, como dirección y horarios de apertura.
+    - **Herramienta:** `file_search`
+    - Solo devuelve información encontrada en el vector store o archivos cargados.
+    - Si la información es ambigua o no se encuentra, solicita aclaración al usuario.
 
-## Response
-You will interact with users primarily through voice, so your responses should be natural, short and conversational. 
-1. **Only use plain text**
-2. No emoticons, No markup, No markdown, No html, only plain text.
-3. Use short and conversational language.
+## Respuesta
+Interactuarás con los usuarios principalmente a través de voz, por lo que tus respuestas deben ser naturales, cortas y conversacionales.
+1. **Solo usa texto plano**
+2. Sin emoticones, Sin marcado, Sin markdown, Sin html, solo texto plano.
+3. Usa lenguaje corto y conversacional.
 
-When customers ask about how much pizza they need for a group, use the pizza calculator function to provide helpful recommendations based on the number of people and their appetite level.
+Cuando los clientes pregunten cuánta pizza necesitan para un grupo, usa la función calculadora de pizza para proporcionar recomendaciones útiles basadas en el número de personas y su nivel de apetito.
 ```
 
 
@@ -87,12 +87,12 @@ Ahora, actualiza tu `agent.py` para cargar estas instrucciones y establecer par�
 
 Encuentra el código 
 
-```
+```python
 agent = project_client.agents.create_agent(
     model="gpt-4o",
-    name="my-agent"
+    name="mi-agente"
 )
-print(f"Created agent, ID: {agent.id}")
+print(f"Agente creado, ID: {agent.id}")
 ```
 
 Reemplaza este código con 
@@ -101,15 +101,15 @@ Reemplaza este código con
 agent = project_client.agents.create_agent(
     model="gpt-4o",
     name="pizza-bot",
-    instructions=open("instructions.txt").read(),
+    instructions=open("instrucciones.txt").read(),
     top_p=0.7,
     temperature=0.7,
 )
-print(f"Created agent with system prompt, ID: {agent.id}")
+print(f"Agente creado con prompt del sistema, ID: {agent.id}")
 ```
 
 Al hacer esto:  
-- El agente **seguirá las instrucciones de PizzaBot** de tu `instructions.txt`.  
+- El agente **seguirá las instrucciones de PizzaBot** de tu `instrucciones.txt`.  
 - Los parámetros `top_p` y `temperature` te dan control sobre la **creatividad y aleatoriedad** en las respuestas.  
 
 
@@ -121,9 +121,9 @@ Prueba el Agente:
 python agent.py
 ```
 
-Intenta modificar tu `instructions.txt` y vuelve a ejecutar el agente. Verás cómo las instrucciones del sistema influyen directamente en la personalidad y el comportamiento del agente.  
+Intenta modificar tu `instrucciones.txt` y vuelve a ejecutar el agente. Verás cómo las instrucciones del sistema influyen directamente en la personalidad y el comportamiento del agente.  
 
-Ahora puedes chatear con tu agente directamente en el terminal. Escribe `exit` o `quit` para detener la conversación.  
+Ahora puedes chatear con tu agente directamente en el terminal. Escribe `salir` o `terminar` para detener la conversación.  
 
 
 ## Resumen  
@@ -142,7 +142,7 @@ En este capítulo, has:
 ## Muestra de código final
 
 ```python 
-<!--@include: ../codesamples/agent_3_instructions.py-->
+<!--@include: ../codesamples/es/agent_3_instructions.py-->
 ```
 
 *Traducido usando GitHub Copilot.*

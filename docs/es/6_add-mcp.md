@@ -120,7 +120,7 @@ class MyRunHandler(RunHandler):
     def submit_mcp_tool_approval(
         self, *, run: ThreadRun, tool_call: RequiredMcpToolCall, **kwargs: Any
     ) -> ToolApproval:
-        print(f"[RunHandler] Approving MCP tool call: {tool_call.id} for tool: {tool_call.name}")
+        print(f"[RunHandler] Aprobando llamada a herramienta MCP: {tool_call.id} para la herramienta: {tool_call.name}")
         return ToolApproval(
             tool_call_id=tool_call.id,
             approve=True,
@@ -154,9 +154,9 @@ Para realizar pedidos, el agente debe identificar al cliente.
 2. **Actualiza tu `instructions.txt`** con los detalles de tu usuario o pasa el GUID en el chat.
 
 ```txt
-## User details:
-Name: <YOUR NAME>
-UserId: <YOUR USER GUID>
+## Detalles de Usuario:
+Nombre: <TU NOMBRE>
+UserId: <TU GUID DE USUARIO>
 ```
 
 3. (Opcional) Ve tu panel de pedidos:  
@@ -181,7 +181,7 @@ Muéstrame las pizzas disponibles.
 Realiza un pedido de 2 pizzas pepperoni grandes.
 ```
 
-El agente llamará automáticamente a las herramientas MCP apropiadas, recuperará datos de la API en vivo de Contoso Pizza y responderá conversacionalmente — siguiendo las reglas de tu **instructions.txt** (por ejemplo, tono, moneda local y conversiones de zona horaria).
+El agente llamará automáticamente a las herramientas MCP apropiadas, recuperará datos de la API en vivo de Contoso Pizza y responderá conversacionalmente — siguiendo las reglas de tu **instrucciones.txt** (por ejemplo, tono, moneda local y conversiones de zona horaria).
 
 
 
@@ -220,7 +220,7 @@ Tu **Contoso PizzaBot** ahora es un asistente de IA totalmente operacional, inte
 ## Muestra de código final
 
 ```python 
-<!--@include: ../codesamples/agent_6_mcp.py-->
+<!--@include: ../codesamples/es/agent_6_mcp.py-->
 ```
 
 *Traducido usando GitHub Copilot.*
