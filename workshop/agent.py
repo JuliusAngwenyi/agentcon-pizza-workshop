@@ -4,7 +4,7 @@ import glob
 from dotenv import load_dotenv
 from azure.identity import DefaultAzureCredential
 from azure.ai.projects import AIProjectClient
-from azure.ai.projects.models import PromptAgentDefinition, FileSearchTool, FunctionTool, Tool
+from azure.ai.projects.models import PromptAgentDefinition, FileSearchTool, FunctionTool, MCPTool, Tool
 from openai.types.responses.response_input_param import FunctionCallOutput, ResponseInputParam
 
 load_dotenv()
@@ -68,10 +68,19 @@ def get_pizza_quantity(people: int) -> str:
     return f"For {people} you need to order {people // 2 + people % 2} pizzas."
 ## -- Function Calling Tool -- ##
 
+## -- MCP -- ##
+mcpTool = MCPTool(
+    server_label="contoso-pizza-mcp",
+    server_url="https://ca-pizza-mcp-sc6u2typoxngc.graypond-9d6dd29c.eastus2.azurecontainerapps.io/sse",
+    require_approval="never"
+)
+## -- MCP -- ##
+
 ## Define the toolset for the agent
 toolset: list[Tool] = []
 toolset.append(FileSearchTool(vector_store_ids=[vector_store.id]))
 toolset.append(func_tool)
+toolset.append(mcpTool)
 
 ## Create a Foundry Agent
 agent = project_client.agents.create_version(
